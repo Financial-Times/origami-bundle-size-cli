@@ -222,15 +222,21 @@ class OrigamiBundleSizeCliCommand extends Command {
 
 		toBundles.css.forEach(current => {
 			const brand = current.brand;
-			const previous = toBundles.css.find(previous => previous.brand === current.brand);
+			const previous = fromBundles.css.find(previous => (
+				previous.brand === current.brand ||
+				(previous.brand === null && current.brand === 'master')
+			));
 			if (previous) {
 				this.log(getMessage(current, previous, 'css', brand));
 			}
 		});
 
-		fromBundles.js.forEach(current => {
+		toBundles.js.forEach(current => {
 			const brand = current.brand;
-			const previous = fromBundles.js.find(previous => previous.brand === current.brand);
+			const previous = fromBundles.js.find(previous => (
+				previous.brand === current.brand ||
+				(previous.brand === null && current.brand === 'master')
+			));
 			if (previous) {
 				this.log(getMessage(current, previous, 'js', brand));
 			}
