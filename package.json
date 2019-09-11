@@ -1,0 +1,48 @@
+{
+  "name": "origami-bundle-size-cli",
+  "description": "Find the difference in JS and CSS bundle size between component versions.",
+  "version": "1.0.0",
+  "bin": {
+    "origami-bundle-size": "./bin/run"
+  },
+  "bugs": "https://github.com/Financial-Times/origami-bundle-size-cli/issues",
+  "dependencies": {
+    "@financial-times/origami-repo-data-client": "^1.6.0",
+    "@oclif/command": "^1.5.19",
+    "@oclif/config": "^1.13.3",
+    "@oclif/plugin-help": "^2.2.1",
+    "execa": "^2.0.4",
+    "node-fetch": "^2.6.0",
+    "semver": "^6.3.0"
+  },
+  "devDependencies": {
+    "@oclif/test": "^1.2.5",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-oclif": "^3.1.0",
+    "mocha": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "files": [
+    "/bin",
+    "/src"
+  ],
+  "homepage": "https://github.com/Financial-Times/origami-bundle-size-cli",
+  "keywords": [
+    "cli",
+    "origami",
+    "bundle"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "bin": "origami-bundle-size"
+  },
+  "repository": "Financial-Times/origami-bundle-size-cli",
+  "scripts": {
+    "posttest": "eslint .",
+    "test": "mocha \"test/**/*.test.js\""
+  }
+}
