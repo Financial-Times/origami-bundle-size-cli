@@ -11,8 +11,8 @@ const fetchBundleSizeFromBuildService = require('./build-service-bundle-size');
 module.exports = async (component, version, brands) => {
 
 	const bundles = {
-		'css': [],
-		'js': []
+		css: [],
+		js: []
 	};
 
 	// Try Repo Data
@@ -30,15 +30,8 @@ module.exports = async (component, version, brands) => {
 	// Try Build Service
 	let buildServiceError;
 	try {
-		if (!semver.valid(version)) {
-			throw new TypeError('Need a valid semver version for repo data.');
-		}
-
-		const toBundles = await fetchBundleSizeFromBuildService(component, version, 'js', brands);
-		const fromBundles = await fetchBundleSizeFromBuildService(component, version, 'css', brands);
-
-		bundles.css = await repoData.listBundles(component, version, 'css');
-		bundles.js = await repoData.listBundles(component, version, 'js');
+		bundles.css = await fetchBundleSizeFromBuildService(component, version, 'css', brands);
+		bundles.js = await fetchBundleSizeFromBuildService(component, version, 'js', brands);
 	} catch (error) {
 		buildServiceError = error;
 	}
@@ -48,6 +41,5 @@ module.exports = async (component, version, brands) => {
 		throw new Error(`Cound not get bundle information for ${component} at version ${version}. Build service: ${buildServiceError.message}. Repo data: ${repoDataError.message}.`);
 	}
 
-
-
+	return bundles;
 };

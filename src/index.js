@@ -2,7 +2,7 @@ const {Command} = require('@oclif/command');
 const fs = require('fs');
 const execa = require('execa');
 const semver = require('semver');
-const fetchBundleSizeFromBuildService = require('./build-service-bundle-size');
+const fetchBundleSize = require('./bundle-size');
 
 const RepoDataClient = require('@financial-times/origami-repo-data-client');
 const repoData = new RepoDataClient({
@@ -217,23 +217,20 @@ class OrigamiBundleSizeCliCommand extends Command {
 
 		this.log(`${name} diff from ${from} to ${to}`);
 
-		const toCssBundles = await fetchBundleSizeFromBuildService(name, to, 'css', brands.to);
-		const fromCssBundles = await fetchBundleSizeFromBuildService(name, from, 'css', brands.from);
+		const toBundles = await fetchBundleSize(name, to, brands.to);
+		const fromBundles = await fetchBundleSize(name, from, brands.from);
 
-		const toJsBundles = await fetchBundleSizeFromBuildService(name, to, 'js', brands.to);
-		const fromJsBundles = await fetchBundleSizeFromBuildService(name, from, 'js', brands.from);
-
-		toCssBundles.forEach(current => {
+		toBundles.css.forEach(current => {
 			const brand = current.brand;
-			const previous = fromCssBundles.find(previous => previous.brand === current.brand);
+			const previous = toBundles.css.find(previous => previous.brand === current.brand);
 			if (previous) {
 				this.log(getMessage(current, previous, 'css', brand));
 			}
 		});
 
-		toJsBundles.forEach(current => {
+		fromBundles.js.forEach(current => {
 			const brand = current.brand;
-			const previous = fromJsBundles.find(previous => previous.brand === current.brand);
+			const previous = fromBundles.js.find(previous => previous.brand === current.brand);
 			if (previous) {
 				this.log(getMessage(current, previous, 'js', brand));
 			}
