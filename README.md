@@ -1,16 +1,26 @@
 origami-bundle-size-cli
 ======================
 
-Find the difference in JS and CSS bundle size between component versions.
+**This is a work in progress:** Find the difference in JS and CSS bundle size between component versions.
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/origami-bundle-size-cli.svg)](https://npmjs.org/package/origami-bundle-size-cli)
-[![CircleCI](https://circleci.com/gh/Financial-Times/origami-bundle-size-cli/tree/master.svg?style=shield)](https://circleci.com/gh/Financial-Times/origami-bundle-size-cli/tree/master)
-[![Downloads/week](https://img.shields.io/npm/dw/origami-bundle-size-cli.svg)](https://npmjs.org/package/origami-bundle-size-cli)
-[![License](https://img.shields.io/npm/l/origami-bundle-size-cli.svg)](https://github.com/Financial-Times/origami-bundle-size-cli/blob/master/package.json)
+Run within a component directory to compare the bundle sizes of HEAD against the
+latest release (HEAD must be pushed to Github).
 
-<!-- toc -->
-# Usage
-<!-- usage -->
-# Commands
-<!-- commands -->
+`origami-bundle-size`
+
+Or within a component directory and provide a verison to compare HEAD against.
+
+`origami-bundle-size v1.0.0`
+
+Or compare the bundle size of any two published versions of a given Origami
+component.
+
+`origami-bundle-size o-table v7.0.0 v7.4.0`
+
+```
+o-table diff from v7.0.0 to v7.4.0
+css(master): 0.1kb decrease (0.04kb increase with gzip).
+css(internal): 0.1kb decrease (0.04kb increase with gzip).
+css(whitelabel): 0.1kb decrease (0.04kb increase with gzip).
+js: 8.95kb increase (1.91kb increase with gzip).
+```
