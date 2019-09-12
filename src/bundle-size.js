@@ -51,13 +51,7 @@ module.exports = async component => {
 
 	// Return all bundles together with a language property.
 	return [
-		...bundles.js.map(b => {
-			b.language = 'js';
-			return b;
-		}),
-		...bundles.css.map(b => {
-			b.language = 'css';
-			return b;
-		})
+		...bundles.js,
+		...bundles.css
 	];
 };
