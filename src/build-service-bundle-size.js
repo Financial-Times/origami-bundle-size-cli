@@ -1,18 +1,18 @@
 const fetch = require('node-fetch');
 
 /**
- * Get bundle size information (css or js) for a component by brand at a
+ * Get bundle size information (css or js) for a name by brand at a
  * given commit hash.
  *
- * @param {string} component - the component name.
+ * @param {string} name - the component name.
  * @param {string} version - the tag, branch, or commit hash.
  * @param {string} language - the language i.e. 'css' or 'js'.
  * @param {string} brand [null] - the brand e.g. 'internal' (optional).
  * @return {object} - bundle information.
  */
-async function getBundleInfo(component, version, language, brand = null) {
+async function getBundleInfo(name, version, language, brand = null) {
 	const buildServiceUrl = new URL(`https://www.ft.com/__origami/service/build/v2/bundles/${language}`);
-	buildServiceUrl.searchParams.append('modules', `${component}@${version}`);
+	buildServiceUrl.searchParams.append('modules', `${name}@${version}`);
 	if (brand) {
 		buildServiceUrl.searchParams.append('brand', brand);
 	}
@@ -36,7 +36,7 @@ async function getBundleInfo(component, version, language, brand = null) {
 			}
 			sizes[encoding || 'raw'] = response.headers.get('content-length');
 		} catch (error) {
-			const buildServiceError = new Error(`Unable to load ${encoding || 'non-encoded'} bundle from ${buildServiceUrl.toString()}${error.status ? ` (status: ${error.status}).` : ` within ${timeout}ms.`}`);
+			const buildServiceError = new Error(`Unable to load ${encoding || 'non-encoded'} bundle from ${buildServiceUrl.toString()}${error.status ? ` (status: ${error.status}).` : ''}`);
 			throw buildServiceError;
 		}
 	}
@@ -47,19 +47,19 @@ async function getBundleInfo(component, version, language, brand = null) {
 		sizes,
 		url: buildServiceUrl.toString(),
 	};
-};
+}
 
 /**
- * Get bundle size information (css or js) for a component by brand at a
+ * Get bundle size information (css or js) for a name by brand at a
  * given commit hash.
  *
- * @param {string} component - the component name.
+ * @param {string} name - the component name.
  * @param {string} version - the tag, branch, or commit hash.
  * @param {string} language - the language i.e. 'css' or 'js'.
- * @param {array<string>} brands - the brands the component supports e.g. ['internal'], empty if unbranded
+ * @param {array<string>} brands - the brands the name supports e.g. ['internal'], empty if unbranded
  * @return {object} - bundle information.
  */
-module.exports = async (component, version, language, brands) => {
+module.exports = async (name, version, language, brands) => {
 	// only css is branded at time of writing
 	if (brands.length === 0 || language !== 'css') {
 		brands = [null];
@@ -67,7 +67,7 @@ module.exports = async (component, version, language, brands) => {
 	// get bundles for each brand
 	const bundles = [];
 	for await (const brand of brands) {
-		const bundle = await getBundleInfo(component, version, language, brand);
+		const bundle = await getBundleInfo(name, version, language, brand);
 		bundles.push(bundle);
 	}
 	return bundles;
