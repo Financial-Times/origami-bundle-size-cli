@@ -4,30 +4,26 @@ const repoData = new RepoDataClient({
 	apiKey: process.env.REPO_DATA_API_KEY,
 	apiSecret: process.env.REPO_DATA_API_SECRET
 });
-const fetchBundleSizeFromBuildService = require('./build-service-bundle-size');
+const buildServiceBundleSize = require('./build-service-bundle-size');
 
 /**
- * @param {LocalComponent|RemoteComponent} component - The component to get bundle information for.
+ * @param {Version} version - The component version to get bundle information for.
  */
-module.exports = async component => {
-	const name = component.name;
-	const brands = component.brands;
-	const version = component.version;
-
-	const bundles = {
-		css: [],
-		js: []
-	};
+module.exports = async version => {
+	const name = version.name;
+	const brands = version.brands;
+	const ref = version.ref;
 
 	// Try Repo Data:
 	// Repo data will return all bundle sizes in one request, if published.
 	let repoDataError;
 	try {
-		if (!semver.valid(version)) {
+		if (!semver.valid(ref)) {
 			throw new TypeError('Repo data requires a valid semver version.');
 		}
-		bundles.css = await repoData.listBundles(name, version, 'css');
-		bundles.js = await repoData.listBundles(name, version, 'js');
+		const css = await repoData.listBundles(name, ref, 'css');
+		const js = await repoData.listBundles(name, ref, 'js');
+		return [...js, ...css];
 	} catch (error) {
 		repoDataError = error;
 	}
@@ -38,20 +34,13 @@ module.exports = async component => {
 	// to find bundle sizes.
 	let buildServiceError;
 	try {
-		bundles.css = await fetchBundleSizeFromBuildService(name, version, 'css', brands);
-		bundles.js = await fetchBundleSizeFromBuildService(name, version, 'js', brands);
+		const css = await buildServiceBundleSize(name, ref, 'css', brands);
+		const js = await buildServiceBundleSize(name, ref, 'js', brands);
+		return [...js, ...css];
 	} catch (error) {
 		buildServiceError = error;
 	}
 
 	// Error if both failed.
-	if (buildServiceError && repoDataError) {
-		throw new Error(`Cound not get bundle information for ${name} at version ${version}.\nBuild service: ${buildServiceError.message}.\nRepo data: ${repoDataError.message}.`);
-	}
-
-	// Return all bundles together with a language property.
-	return [
-		...bundles.js,
-		...bundles.css
-	];
+	throw new Error(`Cound not get bundle information for ${name} at version ${ref}.\nBuild service: ${buildServiceError.message}.\nRepo data: ${repoDataError.message}.`);
 };

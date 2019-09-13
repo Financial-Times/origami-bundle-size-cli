@@ -28,7 +28,7 @@ class OrigamiBundleSizeCliCommand extends Command {
 		let toBundles;
 		let fromBundles;
 		try {
-			this.log(`${to.name} diff from ${from.version} to ${to.version}`);
+			this.log(`${to.name} diff from ${from.ref} to ${to.ref}`);
 			toBundles = await fetchBundleSize(to);
 			fromBundles = await fetchBundleSize(from);
 		} catch (error) {
@@ -39,7 +39,7 @@ class OrigamiBundleSizeCliCommand extends Command {
 		try {
 			this.log(getMessage(fromBundles, toBundles));
 		} catch (error) {
-			this.error(`Could notgenerate a message from the component bundles: ${error.message}`);
+			this.error(`Could not generate a message from the component bundles: ${error.message}`);
 		}
 	}
 }

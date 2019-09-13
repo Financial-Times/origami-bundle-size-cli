@@ -11,14 +11,12 @@ const repoData = new RepoDataClient({
  * @return {object} - The component's bower.json
  */
 function getBower() {
-	let bower;
 	try {
 		const data = fs.readFileSync('./bower.json', 'utf8');
-		bower = JSON.parse(data);
+		return JSON.parse(data);
 	} catch (error) {
 		throw new TypeError('Could not parse the component\'s bower.json.');
 	}
-	return bower;
 }
 
 /**
@@ -36,14 +34,12 @@ function getName() {
  * @return {object} - The component's origami.json
  */
 function getOrigamiManifest() {
-	let origami;
 	try {
 		const data = fs.readFileSync('./origami.json', 'utf8');
-		origami = JSON.parse(data);
+		return JSON.parse(data);
 	} catch (error) {
 		throw new Error(`Could not parse the component's origami.json. Are you running in a component directory?\n${error.message}`);
 	}
-	return origami;
 }
 
 /**
@@ -65,14 +61,12 @@ function getBrands() {
  * @return {string} - The the current git commit for the current component directory.
  */
 async function getCurrentCommit() {
-	let commit;
 	try {
 		const { stdout } = await execa.command('git rev-parse HEAD');
-		commit = stdout;
+		return stdout;
 	} catch (error) {
 		throw new TypeError('Could not find the latest component commit.');
 	}
-	return commit;
 }
 
 /**
@@ -80,7 +74,6 @@ async function getCurrentCommit() {
  * @return {string} - version
  */
 async function getLatestRelease() {
-	let tag;
 	try {
 		const { stdout } = await execa.command('git tag');
 		const tags = stdout
@@ -97,33 +90,49 @@ async function getLatestRelease() {
 				}
 				return 0;
 			});
-		tag = tags[0];
+		return tags[0];
 	} catch (error) {
 		throw new Error('couldn\'t get the latest release ' + error.message);
 	}
-	return tag;
 }
 
-module.exports = class LocalVersion {
-	constructor(name, version, brands) {
+module.exports = class Version {
+	constructor(name, ref, brands) {
 		this.name = name;
-		this.version = version;
+		this.ref = ref;
 		this.brands = brands;
 	}
 
-	static async create(version) {
-		const isSemver = semver.valid(version);
-		if (!isSemver && version !== 'release' && version !== 'commit') {
+	static async create(name, ref) {
+		if (!semver.valid(ref)) {
+			throw new Error(`${ref} is not a valid semver version.`);
+		}
+
+		try {
+			const brands = (await repoData.getManifest(name, ref, 'origami')).brands || [];
+			return new Version(name, ref, brands);
+		} catch (error) {
+			throw new Error(`Could not get manifest files for version ${ref} of ${name} from Origami Repo Data. ${error.message}`);
+		}
+	}
+
+	static async createFromLocalDirectory(ref) {
+		const isSemver = semver.valid(ref);
+		if (!isSemver && ref !== 'release' && ref !== 'commit') {
 			throw new Error('The version must be a valid semver tag, "release", or "commit".');
+		}
+		// v1.0.0 to 1.0.0
+		if (isSemver) {
+			ref = semver.valid(ref);
 		}
 		let name;
 		try {
 			// Find version locally if not a semver.
-			if (version === 'release') {
-				version = await getLatestRelease();
+			if (ref === 'release') {
+				ref = await getLatestRelease();
 			}
-			if (version === 'commit') {
-				version = await getCurrentCommit();
+			if (ref === 'commit') {
+				ref = await getCurrentCommit();
 			}
 			// Find name locally.
 			name = getName();
@@ -136,14 +145,14 @@ module.exports = class LocalVersion {
 		let brands;
 		if (isSemver) {
 			try {
-				brands = (await repoData.getManifest(name, version, 'origami')).brands || [];
+				brands = (await repoData.getManifest(name, ref, 'origami')).brands || [];
 			} catch (error) {
-				throw new Error(`Could not get manifest files for version ${version} of ${name}. ${error.message}`);
+				throw new Error(`Could not get manifest files for version ${ref} of ${name}. ${error.message}`);
 			}
 		} else {
 			brands = getBrands();
 		}
 
-		return new LocalVersion(name, version, brands);
+		return new Version(name, ref, brands);
 	}
 };

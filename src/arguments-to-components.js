@@ -1,5 +1,4 @@
-const LocalComponent = require('./local-component');
-const RemoteComponent = require('./remote-component');
+const Version = require('./version');
 
 module.exports = async argv => {
 	let from;
@@ -10,8 +9,8 @@ module.exports = async argv => {
 	// from: the last release of the same major (not a pre release)
 	// to: the latest commit (HEAD)
 	if (argv.length === 0) {
-		from = await LocalComponent.create('release');
-		to = await LocalComponent.create('commit');
+		from = await Version.createFromLocalDirectory('release');
+		to = await Version.createFromLocalDirectory('commit');
 	}
 
 	// If one argument is given take that as the to version, and find the from
@@ -20,8 +19,8 @@ module.exports = async argv => {
 	// from: v1.0.0
 	// to: the latest commit (HEAD)
 	if (argv.length === 1) {
-		from = await LocalComponent.create(argv[0]);
-		to = await LocalComponent.create('commit');
+		from = await Version.createFromLocalDirectory(argv[0]);
+		to = await Version.createFromLocalDirectory('commit');
 	}
 
 	// Do not expect only two arguments
@@ -33,8 +32,8 @@ module.exports = async argv => {
 	// versions specifically. E.g:
 	// > origami-bundle-size o-table v7.0.0 v7.4.0
 	if (argv.length === 3) {
-		from = await RemoteComponent.create(argv[0], argv[1]);
-		to = await RemoteComponent.create(argv[0], argv[2]);
+		from = await Version.create(argv[0], argv[1]);
+		to = await Version.create(argv[0], argv[2]);
 	}
 
 	return {
