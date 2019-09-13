@@ -28,7 +28,7 @@ class OrigamiBundleSizeCliCommand extends Command {
 		let toBundles;
 		let fromBundles;
 		try {
-			this.log(`${to.name} diff from ${from.ref} to ${to.ref}`);
+			this.log(`${to.name} bundle size difference from ${from.ref} to ${to.ref}`);
 			toBundles = await fetchBundleSize(to);
 			fromBundles = await fetchBundleSize(from);
 		} catch (error) {

@@ -15,12 +15,10 @@ Or within a component directory and provide a verison to compare HEAD against.
 Or compare the bundle size of any two published versions of a given Origami
 component.
 
-`origami-bundle-size o-table v7.0.0 v7.4.0`
+`origami-bundle-size o-table v5.0.0 v7.4.0`
 
 ```
-o-table diff from v7.0.0 to v7.4.0
-css(master): 0.1kb decrease (0.04kb increase with gzip).
-css(internal): 0.1kb decrease (0.04kb increase with gzip).
-css(whitelabel): 0.1kb decrease (0.04kb increase with gzip).
-js: 8.95kb increase (1.91kb increase with gzip).
+o-table bundle size difference from v5.0.0 to v7.4.0
+js: 38.16kb increase (9.87kb/gzip)
+css, master: 12.08kb increase (1.64kb/gzip)
 ```
