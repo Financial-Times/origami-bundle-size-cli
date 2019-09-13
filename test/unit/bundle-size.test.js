@@ -45,10 +45,17 @@ describe('bundle-size', () => {
 		getBundleSize = proxyquire('../../src/bundle-size', {
 			'./build-service-bundle-size': buildServiceSizeStub
 		});
+		// Repo data does not return a language property in its bundle data.
 		// Mock repo data.
 		repoDataStub = sinon.stub(RepoDataClient.prototype, 'listBundles');
-		repoDataStub.withArgs(name, sinon.match.any, 'css').returns(mockCssBundles);
-		repoDataStub.withArgs(name, sinon.match.any, 'js').returns(mockJsBundles);
+		repoDataStub.withArgs(name, sinon.match.any, 'css').returns(mockCssBundles.map(b => {
+			delete b.language;
+			return b;
+		}));
+		repoDataStub.withArgs(name, sinon.match.any, 'js').returns(mockJsBundles.map(b => {
+			delete b.language;
+			return b;
+		}));
 	});
 
 	afterEach(() => {

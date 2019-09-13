@@ -21,9 +21,16 @@ module.exports = async version => {
 		if (!semver.valid(ref)) {
 			throw new TypeError('Repo data requires a valid semver version.');
 		}
+		// Add language property to bundle size data as repo data doesn't return this.
 		const css = await repoData.listBundles(name, ref, 'css');
 		const js = await repoData.listBundles(name, ref, 'js');
-		return [...js, ...css];
+		return [...js.map(b => {
+			b.language = 'js';
+			return b;
+		}), ...css.map(b => {
+			b.language = 'css';
+			return b;
+		})];
 	} catch (error) {
 		repoDataError = error;
 	}
