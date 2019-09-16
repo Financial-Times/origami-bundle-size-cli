@@ -7,6 +7,9 @@ jobs:
       - checkout
       - run: npm ci
       - run:
+          name: Run linters
+          command: npm run lint
+      - run:
           name: Testing
           command: npm test
   publish_to_npm:
