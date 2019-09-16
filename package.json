@@ -44,8 +44,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --forbid-only \"test/**/*.test.js\"",
-    "test:functional": "mocha --forbid-only \"test/functional/*.test.js\"",
-    "test:integration": "mocha --forbid-only \"test/index.test.js\"",
+    "test:integration": "mocha --forbid-only \"test/integration/*.test.js\"",
     "test:unit": "mocha --forbid-only \"test/unit/*.test.js\""
   }
 }
