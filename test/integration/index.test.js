@@ -1,6 +1,6 @@
 'use strict';
 
-const cmd = require('..');
+const cmd = require('../../src');
 const proclaim = require('proclaim');
 const { stdout } = require('stdout-stderr');
 
