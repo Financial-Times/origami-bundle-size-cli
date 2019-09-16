@@ -1,3 +1,5 @@
+'use strict';
+
 function getSizeDiff(current, previous) {
 	return ((current - previous) / 1024).toFixed(2);
 }

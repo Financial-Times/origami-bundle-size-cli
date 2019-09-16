@@ -1,3 +1,5 @@
+'use strict';
+
 const getBundleInfo = require('../../src/build-service-bundle-size');
 const proclaim = require('proclaim');
 

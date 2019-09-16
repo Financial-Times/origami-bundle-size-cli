@@ -1,3 +1,5 @@
+'use strict';
+
 const { test, expect } = require('@oclif/test');
 const cmd = require('..');
 

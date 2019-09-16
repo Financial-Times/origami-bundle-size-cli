@@ -1,3 +1,5 @@
+'use strict';
+
 const sinon = require('sinon');
 const proclaim = require('proclaim');
 const getComponents = require('../../src/arguments-to-components');

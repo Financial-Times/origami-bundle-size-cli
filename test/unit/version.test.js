@@ -1,3 +1,5 @@
+'use strict';
+
 const sinon = require('sinon');
 const proclaim = require('proclaim');
 const Version = require('../../src/version');

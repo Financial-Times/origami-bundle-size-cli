@@ -1,3 +1,5 @@
+'use strict';
+
 const sinon = require('sinon');
 const proclaim = require('proclaim');
 const proxyquire = require('proxyquire');

@@ -1,3 +1,5 @@
+'use strict';
+
 const fetch = require('node-fetch');
 
 /**
@@ -22,7 +24,6 @@ async function getBundleInfo(name, version, language, brand = null) {
 	for (const encoding of ['', 'gzip']) {
 		try {
 			// Consider parallelising:
-			// eslint-disable-next-line no-await-in-loop
 			const response = await fetch(buildServiceUrl.toString(), {
 				method: 'HEAD',
 				headers: {

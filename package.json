@@ -45,7 +45,9 @@
   },
   "repository": "Financial-Times/origami-bundle-size-cli",
   "scripts": {
-    "posttest": "eslint .",
-    "test": "mocha --forbid-only \"test/**/*.test.js\""
+    "lint": "eslint .",
+    "test": "mocha --forbid-only \"test/**/*.test.js\"",
+    "test:functional": "mocha --forbid-only \"test/functional/*.test.js\"",
+    "test:unit": "mocha --forbid-only \"test/unit/*.test.js\""
   }
 }

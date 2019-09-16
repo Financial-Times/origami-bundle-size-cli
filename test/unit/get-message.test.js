@@ -1,3 +1,5 @@
+'use strict';
+
 const proclaim = require('proclaim');
 const getMessage = require('../../src/get-message');
 

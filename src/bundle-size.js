@@ -1,3 +1,5 @@
+'use strict';
+
 const semver = require('semver');
 const RepoDataClient = require('@financial-times/origami-repo-data-client');
 const repoData = new RepoDataClient({

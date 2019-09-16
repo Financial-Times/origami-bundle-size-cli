@@ -1,3 +1,5 @@
+'use strict';
+
 const Version = require('./version');
 
 module.exports = async argv => {

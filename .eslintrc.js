@@ -1,5 +1,13 @@
-{
-  "extends": "oclif",
+'use strict';
+
+module.exports = {
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
   "rules": {
     "no-unused-vars": 2,
     "no-undef": 2,
@@ -10,32 +18,13 @@
     "wrap-iife": 2,
     "new-cap": 2,
     "no-caller": 2,
-    "comma-dangle": 0,
-    "padded-blocks": 0,
-    "object-curly-spacing": 0,
-    "array-callback-return": 0,
-    "unicorn/prefer-spread": 0,
-    "unicorn/no-process-exit": 0,
-    "no-process-exit": 0,
-    "indent": [
-      "error",
-      "tab"
-    ],
-    "semi": [
-      2,
-      "always"
-    ],
-    "quotes": [
-      1,
-      "single"
-    ],
-    "no-loop-func": 0,
+    "semi": [2, "always"],
+    "strict": [2, "global"],
+    "quotes": [1, "single"],
+    "no-loop-func": 2,
     "no-irregular-whitespace": 1,
     "no-multi-spaces": 2,
-    "one-var": [
-      2,
-      "never"
-    ],
+    "one-var": [2, "never"],
     "constructor-super": 2,
     "no-this-before-super": 2,
     "no-var": 2,

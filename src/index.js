@@ -1,3 +1,5 @@
+'use strict';
+
 const {Command} = require('@oclif/command');
 const fetchBundleSize = require('./bundle-size');
 const getComponents = require('./arguments-to-components');

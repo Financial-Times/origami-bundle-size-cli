@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const execa = require('execa');
 const semver = require('semver');
