@@ -1,5 +1,5 @@
 {
-    "description": "A CLI tool to fine the difference in JS and CSS bundle size between component versions.",
+    "description": "A CLI tool to find the difference in JS and CSS bundle size between component versions.",
     "origamiType": null,
     "origamiVersion": 1,
     "keywords": [
