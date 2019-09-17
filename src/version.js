@@ -111,10 +111,10 @@ module.exports = class Version {
 		}
 
 		try {
-			const brands = (await repoData.getManifest(name, ref, 'origami')).brands || [];
+			const brands = (await repoData.getVersion(name, ref).brands) || [];
 			return new Version(name, ref, brands);
 		} catch (error) {
-			throw new Error(`Could not get manifest files for version ${ref} of ${name} from Origami Repo Data. ${error.message}`);
+			throw new Error(`Could not get brands for version ${ref} of ${name} from Origami Repo Data. ${error.message}`);
 		}
 	}
 
@@ -147,9 +147,9 @@ module.exports = class Version {
 		let brands;
 		if (isSemver) {
 			try {
-				brands = (await repoData.getManifest(name, ref, 'origami')).brands || [];
+				brands = (await repoData.getVersion(name, ref)).brands || [];
 			} catch (error) {
-				throw new Error(`Could not get manifest files for version ${ref} of ${name}. ${error.message}`);
+				throw new Error(`Could not get brands for version ${ref} of ${name}. ${error.message}`);
 			}
 		} else {
 			brands = getBrands();

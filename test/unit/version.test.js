@@ -18,6 +18,14 @@ describe('version', () => {
 	const mockLatestNonPreReleaseTag = 'v7.2.2';
 	const commitRef = 'ce013625030ba8dba906f756967f9e9ca394464a';
 
+	const mockRepoDataVersion = {
+		name: 'example',
+		brands: [
+			'master',
+			'internal'
+		]
+	};
+
 	const mockOrigmaiManifest = {
 		name: 'example',
 		brands: [
@@ -35,7 +43,7 @@ describe('version', () => {
 
 	beforeEach(() => {
 		// Stub repo data.
-		repoDataStub = sinon.stub(RepoDataClient.prototype, 'getManifest').returns(mockOrigmaiManifest);
+		repoDataStub = sinon.stub(RepoDataClient.prototype, 'getVersion').returns(mockRepoDataVersion);
 		// Stub execa.
 		execaCommandStub = sinon.stub(execa, 'command');
 		execaCommandStub.withArgs('git rev-parse HEAD').returns({
