@@ -2,7 +2,7 @@
 
 const {Command} = require('@oclif/command');
 const fetchBundleSize = require('./bundle-size');
-const getComponents = require('./arguments-to-components');
+const getVersions = require('./arguments-to-versions');
 const getMessage = require('./get-message');
 
 class OrigamiBundleSizeCliCommand extends Command {
@@ -18,7 +18,7 @@ class OrigamiBundleSizeCliCommand extends Command {
 		// Find component versions for comparison e.g. ("from" v1.0.0 "to" v2.0.0).
 		let components;
 		try {
-			components = await getComponents(argv);
+			components = await getVersions(argv);
 		} catch (error) {
 			this.error(error.message);
 		}

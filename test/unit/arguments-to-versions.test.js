@@ -2,7 +2,7 @@
 
 const sinon = require('sinon');
 const proclaim = require('proclaim');
-const getComponents = require('../../src/arguments-to-components');
+const getVersions = require('../../src/arguments-to-versions');
 const Version = require('../../src/version');
 
 describe('arguments-to-components', () => {
@@ -11,7 +11,7 @@ describe('arguments-to-components', () => {
 		it('errors', async () => {
 			let hasError;
 			try {
-				await getComponents(['v1.0.0', 'v2.0.0']);
+				await getVersions(['v1.0.0', 'v2.0.0']);
 			} catch (error) {
 				hasError = error;
 			}
@@ -30,7 +30,7 @@ describe('arguments-to-components', () => {
 			localComponentStub.withArgs('release').returns(release);
 			localComponentStub.withArgs('commit').returns(commit);
 
-			const components = await getComponents([]);
+			const components = await getVersions([]);
 			proclaim.equal(components.from, release);
 			proclaim.equal(components.to, commit);
 
@@ -48,7 +48,7 @@ describe('arguments-to-components', () => {
 			localComponentStub.withArgs(tag).returns(semver);
 			localComponentStub.withArgs('commit').returns(commit);
 
-			const components = await getComponents([tag]);
+			const components = await getVersions([tag]);
 			proclaim.equal(components.from, semver);
 			proclaim.equal(components.to, commit);
 
@@ -68,7 +68,7 @@ describe('arguments-to-components', () => {
 			remoteComponentStub.withArgs(name, taga).returns(a);
 			remoteComponentStub.withArgs(name, tagb).returns(b);
 
-			const components = await getComponents([name, taga, tagb]);
+			const components = await getVersions([name, taga, tagb]);
 			proclaim.equal(components.from, a);
 			proclaim.equal(components.to, b);
 
