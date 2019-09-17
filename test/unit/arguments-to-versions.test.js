@@ -6,6 +6,28 @@ const getVersions = require('../../src/arguments-to-versions');
 const Version = require('../../src/version');
 
 describe('arguments-to-components', () => {
+	const commit = new Version('test', 'commit', []);
+	const release = new Version('test', 'release', []);
+
+	const tag = 'v3.0.0';
+	const semver = new Version('test', tag, []);
+
+	let versionStub;
+	let localVersionStub;
+
+	beforeEach(() => {
+		localVersionStub = sinon.stub(Version, 'createFromLocalDirectory');
+		localVersionStub.withArgs('release').returns(release);
+		localVersionStub.withArgs('commit').returns(commit);
+		localVersionStub.withArgs(tag).returns(semver);
+
+		versionStub = sinon.stub(Version, 'create');
+	});
+
+	afterEach(() => {
+		versionStub.restore();
+		localVersionStub.restore();
+	});
 
 	describe('given two arguments', () => {
 		it('errors', async () => {
@@ -23,56 +45,36 @@ describe('arguments-to-components', () => {
 
 	describe('given no arguments', () => {
 		it('gets a "component" for the latest release and commit to compare locally', async () => {
-			const commit = new Version('test', 'commit', []);
-			const release = new Version('test', 'release', []);
-
-			const localComponentStub = sinon.stub(Version, 'createFromLocalDirectory');
-			localComponentStub.withArgs('release').returns(release);
-			localComponentStub.withArgs('commit').returns(commit);
-
-			const components = await getVersions([]);
-			proclaim.equal(components.from, release);
-			proclaim.equal(components.to, commit);
-
-			localComponentStub.restore();
+			const versions = await getVersions([]);
+			proclaim.equal(versions.from, release);
+			proclaim.equal(versions.to, commit);
 		});
 	});
 
 	describe('given one semver argument', () => {
 		it('gets a "component" for the given semver and the latest commit to compare locally', async () => {
-			const tag = 'v3.0.0';
-			const commit = new Version('test', 'commit', []);
-			const semver = new Version('test', tag, []);
-
-			const localComponentStub = sinon.stub(Version, 'createFromLocalDirectory');
-			localComponentStub.withArgs(tag).returns(semver);
-			localComponentStub.withArgs('commit').returns(commit);
-
-			const components = await getVersions([tag]);
-			proclaim.equal(components.from, semver);
-			proclaim.equal(components.to, commit);
-
-			localComponentStub.restore();
+			const versions = await getVersions([tag]);
+			proclaim.equal(versions.from, semver);
+			proclaim.equal(versions.to, commit);
 		});
 	});
 
 	describe('given a component name and two semver arguments', () => {
 		it('gets "component"s for given name and semvers to compare remotely (via origami-repo-data)', async () => {
 			const name = 'o-example';
+			// semver a
 			const taga = 'v1.0.0';
-			const tagb = 'v3.0.0';
 			const a = new Version(name, taga, []);
+			// semver b
+			const tagb = 'v4.0.0';
 			const b = new Version(name, tagb, []);
 
-			const remoteComponentStub = sinon.stub(Version, 'create');
-			remoteComponentStub.withArgs(name, taga).returns(a);
-			remoteComponentStub.withArgs(name, tagb).returns(b);
+			versionStub.withArgs(name, taga).returns(a);
+			versionStub.withArgs(name, tagb).returns(b);
 
-			const components = await getVersions([name, taga, tagb]);
-			proclaim.equal(components.from, a);
-			proclaim.equal(components.to, b);
-
-			remoteComponentStub.restore();
+			const versions = await getVersions([name, taga, tagb]);
+			proclaim.equal(versions.from, a);
+			proclaim.equal(versions.to, b);
 		});
 	});
 
