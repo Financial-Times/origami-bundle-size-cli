@@ -1,5 +1,5 @@
 {
-  "name": "origami-bundle-size-cli",
+  "name": "@financial-times/origami-bundle-size-cli",
   "description": "Find the difference in JS and CSS bundle size between component versions.",
   "version": "1.0.0",
   "bin": {
