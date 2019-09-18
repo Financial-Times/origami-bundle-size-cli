@@ -2,10 +2,7 @@
 
 const semver = require('semver');
 const RepoDataClient = require('@financial-times/origami-repo-data-client');
-const repoData = new RepoDataClient({
-	apiKey: process.env.REPO_DATA_API_KEY,
-	apiSecret: process.env.REPO_DATA_API_SECRET
-});
+const repoData = new RepoDataClient();
 const buildServiceBundleSize = require('./build-service-bundle-size');
 
 /**
