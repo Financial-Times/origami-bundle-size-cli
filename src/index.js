@@ -7,11 +7,6 @@ const getMessage = require('./get-message');
 
 class OrigamiBundleSizeCliCommand extends Command {
 	async run() {
-		// Confirm required enviroment variables.
-		if (!process.env.REPO_DATA_API_KEY || !process.env.REPO_DATA_API_SECRET) {
-			this.error('Please provide credentials for [Origami Repo Data](https://origami-repo-data.ft.com/) with the enviroment variables `REPO_DATA_API_KEY` and `REPO_DATA_API_SECRET`.');
-		}
-
 		// Get arguments.
 		const { argv } = this.parse(OrigamiBundleSizeCliCommand);
 
