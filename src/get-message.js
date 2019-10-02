@@ -4,7 +4,7 @@
 const threshold = 0.2;
 
 /**
- * Get the bundle size difference between two bundles.
+ * Get the bundle size difference between two bundles in KB.
  * @param {Object} current - The more recent bundle for comparison.
  * @param {Object} previous - The bundle which pre-dates the current bundle.
 * @return {String}
