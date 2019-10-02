@@ -70,7 +70,7 @@ describe('get-message', () => {
 		similarBundles[0].sizes.raw = (new Number(similarBundles[0].sizes.raw) + 500).toString();
 		// confirm message
 		const message = getMessage(bundlesA, similarBundles);
-		proclaim.equal(message, 'css, master: 0.68kb increase (0.00kb/gzip)\nAn insignificant difference was found for: css (internal), js (master)');
+		proclaim.equal(message, 'css, master: 0.68kb increase (0.00kb/gzip)\nAn insignificant difference was also found for: css (internal), js (master)');
 	});
 
 });

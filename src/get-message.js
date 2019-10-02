@@ -87,7 +87,7 @@ module.exports = (fromBundles, toBundles) => {
 	);
 	if (insignificantComparisons.length !== 0) {
 		message = `${message}\n` +
-			'An insignificant difference was found for: ' +
+			'An insignificant difference was also found for: ' +
 			insignificantComparisons.map(c =>
 				`${c.current.language}${c.current.brand ? ` (${c.current.brand})` : ''}`
 			).join(', ');
