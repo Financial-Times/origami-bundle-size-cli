@@ -29,7 +29,7 @@ class OrigamiBundleSizeCliCommand extends Command {
 			toBundles = await fetchBundleSize(to);
 			fromBundles = await fetchBundleSize(from);
 		} catch (error) {
-			this.error(`Could notget bundle sizes: ${error.message}`);
+			this.error(`Could not get bundle sizes: ${error.message}`);
 		}
 
 		// Log message for CSS bundle size diff.
