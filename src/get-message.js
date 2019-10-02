@@ -60,12 +60,12 @@ module.exports = (fromBundles, toBundles) => {
 	}).filter(b => b.previous);
 
 	// Message if no bundle sizes have changes at all.
-	const unequalComparisons = bundleComparisons.filter(c => {
+	const noBundleSizeChanges = bundleComparisons.every(c => {
 		const rawDiff = getSizeDiff(c.current, c.previous);
-		return Math.abs(rawDiff) !== 0;
+		return Math.abs(rawDiff) === 0;
 	});
 
-	if (unequalComparisons.length === 0) {
+	if (noBundleSizeChanges) {
 		return 'No bundle size differences found.';
 	}
 
