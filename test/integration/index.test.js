@@ -36,6 +36,6 @@ describe('origami-bundle-size-cli', () => {
 		// stop mocking stdout
 		stdout.stop();
 		// confirm the message we expect was output
-		proclaim.include(stdout.output, 'No bundle size difference found');
+		proclaim.include(stdout.output, 'No bundle size differences found.');
 	});
 });
