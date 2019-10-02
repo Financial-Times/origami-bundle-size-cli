@@ -7,10 +7,14 @@ const threshold = 0.2;
  * Get the bundle size difference between two bundles in KB.
  * @param {Object} current - The more recent bundle for comparison.
  * @param {Object} previous - The bundle which pre-dates the current bundle.
-* @return {String}
+ * @param {String} compression [null] - The compression level to compare, i.e 'gzip'.
+ * @return {String}
  */
-function getSizeDiff(current, previous) {
-	return ((current - previous) / 1024).toFixed(2);
+function getSizeDiff(current, previous, compression) {
+	compression = compression || 'raw';
+	const currentContentLength = current.sizes[compression];
+	const previousContentLength = previous.sizes[compression];
+	return ((currentContentLength - previousContentLength) / 1024).toFixed(2);
 }
 
 /**
@@ -20,8 +24,8 @@ function getSizeDiff(current, previous) {
  * @return {String}
  */
 function getBundleComparisonMessage(current, previous) {
-	const gzipDiff = getSizeDiff(current.sizes.gzip, previous.sizes.gzip);
-	const rawDiff = getSizeDiff(current.sizes.raw, previous.sizes.raw);
+	const rawDiff = getSizeDiff(current, previous);
+	const gzipDiff = getSizeDiff(current, previous, 'gzip');
 
 	// Use the current brand in the key in case the previous version is unbranded,
 	// but the current version has just added brand support.
@@ -57,7 +61,7 @@ module.exports = (fromBundles, toBundles) => {
 
 	// Message if no bundle sizes have changes at all.
 	const unequalComparisons = bundleComparisons.filter(c => {
-		const rawDiff = getSizeDiff(c.current.sizes.raw, c.previous.sizes.raw);
+		const rawDiff = getSizeDiff(c.current, c.previous);
 		return Math.abs(rawDiff) !== 0;
 	});
 
@@ -67,7 +71,7 @@ module.exports = (fromBundles, toBundles) => {
 
 	// Message if only small bundle size differences, which are not significant.
 	const significantComparisons = bundleComparisons.filter(c => {
-		const rawDiff = getSizeDiff(c.current.sizes.raw, c.previous.sizes.raw);
+		const rawDiff = getSizeDiff(c.current, c.previous);
 		return Math.abs(rawDiff) > threshold;
 	});
 
