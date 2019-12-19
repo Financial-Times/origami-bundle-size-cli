@@ -9,7 +9,7 @@
   "dependencies": {
     "@financial-times/origami-repo-data-client": "^1.6.0",
     "@oclif/command": "^1.5.19",
-    "execa": "^3.0.0",
+    "execa": "^4.0.0",
     "node-fetch": "^2.6.0",
     "semver": "^6.3.0"
   },
