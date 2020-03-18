@@ -90,15 +90,17 @@ describe('build-service-bundle-size', () => {
 				// when comparing these as the value may change slightly over
 				// time.
 				for (const key in bundle.sizes) {
-					const tolerance = 0.1; // 10%
-					const sizeValue = bundle.sizes[key];
-					const expectedSizeValue = expectedBundle.sizes[key];
-					const expectedMax = expectedSizeValue * (1 + tolerance);
-					const expectedMin = expectedSizeValue * (1 - tolerance);
-					const message = `The ${key} bundle should have a size ` +
-						`around "${expectedSizeValue}" but found "${sizeValue}".`;
-					proclaim.lessThanOrEqual(sizeValue, expectedMax, message);
-					proclaim.greaterThanOrEqual(sizeValue, expectedMin, message);
+					if (bundle.sizes.hasOwnProperty(key)) {
+						const tolerance = 0.1; // 10%
+						const sizeValue = bundle.sizes[key];
+						const expectedSizeValue = expectedBundle.sizes[key];
+						const expectedMax = expectedSizeValue * (1 + tolerance);
+						const expectedMin = expectedSizeValue * (1 - tolerance);
+						const message = `The ${key} bundle should have a size ` +
+							`around "${expectedSizeValue}" but found "${sizeValue}".`;
+						proclaim.lessThanOrEqual(sizeValue, expectedMax, message);
+						proclaim.greaterThanOrEqual(sizeValue, expectedMin, message);
+					}
 				}
 
 				// Remove the bundle sizes, which have already been tested
@@ -110,7 +112,7 @@ describe('build-service-bundle-size', () => {
 					bundle,
 					expectedBundle,
 					`A bundle with url ${bundle.url} did not have the ` +
-					`expected properties.`
+					'expected properties.'
 				);
 			}
 		});
