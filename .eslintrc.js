@@ -42,4 +42,4 @@ module.exports = {
     'xdescribe': true,
     'xit': true
   }
-}
+};
