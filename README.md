@@ -3,7 +3,6 @@
 
 Find the difference in JS and CSS bundle size between component versions, including the gzip difference.
 
-[![CircleCI](https://circleci.com/gh/Financial-Times/origami-bundle-size-cli.svg?style=svg)](https://circleci.com/gh/Financial-Times/origami-bundle-size-cli)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 
