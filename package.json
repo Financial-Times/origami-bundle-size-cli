@@ -8,14 +8,14 @@
   "bugs": "https://github.com/Financial-Times/origami-bundle-size-cli/issues",
   "dependencies": {
     "@financial-times/origami-repo-data-client": "^1.6.0",
-    "@oclif/command": "^1.5.19",
+    "@oclif/command": "^1.7.0",
     "execa": "^4.0.0",
     "node-fetch": "^2.6.0",
     "semver": "^7.0.0",
-    "snyk": "^1.317.0"
+    "snyk": "^1.354.0"
   },
   "devDependencies": {
-    "eslint": "7.2.0",
+    "eslint": "^7.3.1",
     "mocha": "8.0.1",
     "nixt": "^0.5.1",
     "proclaim": "3.6.0",
