@@ -2,7 +2,8 @@
 
 const nixt = require('nixt');
 
-describe('origami-bundle-size-cli', () => {
+describe('origami-bundle-size-cli', function() {
+	this.timeout(20000);
 
 	it('exits with an error with no arguments and not in a component directory', (done) => {
 		nixt({ colors: false })
