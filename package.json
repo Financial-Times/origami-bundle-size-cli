@@ -45,9 +45,7 @@
     "lint": "eslint .",
     "test": "mocha --forbid-only \"test/**/*.test.js\"",
     "test:integration": "mocha --forbid-only \"test/integration/*.test.js\"",
-    "test:unit": "mocha --forbid-only \"test/unit/*.test.js\"",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "test:unit": "mocha --forbid-only \"test/unit/*.test.js\""
   },
   "snyk": true
 }
