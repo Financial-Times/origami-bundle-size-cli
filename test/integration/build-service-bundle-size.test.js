@@ -92,7 +92,7 @@ describe('build-service-bundle-size', function () {
 				// when comparing these as the value may change slightly over
 				// time.
 				for (const key in bundle.sizes) {
-					if (bundle.sizes.hasOwnProperty(key)) {
+					if (Object.prototype.hasOwnProperty.call(bundle.sizes, key)) {
 						const tolerance = 0.1; // 10%
 						const sizeValue = bundle.sizes[key];
 						const expectedSizeValue = expectedBundle.sizes[key];
