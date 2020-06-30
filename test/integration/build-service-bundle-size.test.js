@@ -3,7 +3,9 @@
 const getBundleInfo = require('../../src/build-service-bundle-size');
 const proclaim = require('proclaim');
 
-describe('build-service-bundle-size', () => {
+describe('build-service-bundle-size', function () {
+	this.timeout(20000);
+
 	const testData = [
 		{
 			language: 'js',
