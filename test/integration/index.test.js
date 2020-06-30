@@ -1,41 +1,31 @@
 'use strict';
 
-const cmd = require('../../src');
-const proclaim = require('proclaim');
-const { stdout } = require('stdout-stderr');
+const nixt = require('nixt');
 
-describe('origami-bundle-size-cli', () => {
+describe('origami-bundle-size-cli', function() {
+	this.timeout(20000);
 
-	it('exits with an error with no arguments and not in a component directory', async () => {
-		let errorMessage;
-		try {
-			await cmd.run([]);
-		} catch (error) {
-			errorMessage = error.message;
-		}
-
-		proclaim.include(errorMessage, 'Could not get component details locally');
+	it('exits with an error with no arguments and not in a component directory', (done) => {
+		nixt({ colors: false })
+			.run('./bin/run')
+			.stderr(` ›   Error: Could not get component details locally:
+ ›   Could not parse the component's bower.json.
+ ›   Are you not running in a component directory, or missing arguments?`)
+			.end(done);
 	});
 
-	it('error with only two version arguments, as a component name is required', async () => {
-		let errorMessage = '';
-		try {
-			await cmd.run(['v1.0.0', 'v1.0.1']);
-		} catch (error) {
-			errorMessage = error.message;
-		}
-
-		proclaim.include(errorMessage, 'Incorrect number of arguments');
+	it('error with only two version arguments, as a component name is required', (done) => {
+		nixt({ colors: false })
+			.run('./bin/run v1.0.0 v1.0.1')
+			.stderr(' ›   Error: Incorrect number of arguments, see "origami-bundle-size --help"')
+			.end(done);
 	});
 
-	it('finds bundle size difference given a component name and two versions', async () => {
-		// start mocking stdout
-		stdout.start();
-		//  run the command
-		await cmd.run(['o-test-component', 'v1.0.33', 'v1.0.34']);
-		// stop mocking stdout
-		stdout.stop();
-		// confirm the message we expect was output
-		proclaim.include(stdout.output, 'No bundle size differences found.');
+	it('finds bundle size difference given a component name and two versions', (done) => {
+		nixt({ colors: false })
+			.run('./bin/run o-test-component v1.0.33 v1.0.34')
+			.stdout(`o-test-component bundle size difference from v1.0.33 to v1.0.34
+No bundle size differences found.`)
+			.end(done);
 	});
 });
