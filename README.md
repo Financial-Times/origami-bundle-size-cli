@@ -24,7 +24,7 @@ Origami Bundle Size CLI requires [Node.js] 10.x and [npm].
 First install  Origami Bundle Size CLI:
 
 ```
-npm install -g origami-bundle-size-cli
+npm install -g @financial-times/origami-bundle-size-cli
 ```
 
 Run within a component directory to compare the bundle sizes of HEAD against the
