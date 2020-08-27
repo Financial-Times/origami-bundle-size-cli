@@ -67,7 +67,7 @@ To run the linter locally, run:
 npm run lint
 ```
 
-The tests and linter are run when commits are pushed, you can view [results on CircleCI][ci]. They must pass before we merge a pull request.
+The tests and linter are run when commits are pushed, you can view [results on CI][ci]. They must pass before we merge a pull request.
 
 
 ## Publish
@@ -75,14 +75,13 @@ The tests and linter are run when commits are pushed, you can view [results on C
 - Run `npm version [version]`, where version is major, minor, patch, [or some other version](https://docs.npmjs.com/cli/version).
 - Open a PR which includes the updated `package.json`.
 - When the PR is approved, merge and tag the release in Github.
-- Tagging will trigger CircleCI to deploy to npm.
+- Tagging will trigger CI to deploy to npm.
 
 ## License
 
 The Financial Times has published this software under the [MIT license][license].
 
 
-[ci]: https://circleci.com/gh/Financial-Times/origami-bundle-size-cli
 [license]: http://opensource.org/licenses/MIT
 [node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/
