@@ -2,24 +2,26 @@
 
 const {Command} = require('@oclif/command');
 const fetchBundleSize = require('./bundle-size');
-const getVersions = require('./arguments-to-versions');
 const getMessage = require('./get-message');
+const Version = require('./version');
 
 class OrigamiBundleSizeCliCommand extends Command {
 	async run() {
 		// Get arguments.
 		const { argv } = this.parse(OrigamiBundleSizeCliCommand);
+		if (argv.length !== 3) {
+			this.error('Incorrect number of arguments, see "origami-bundle-size --help"');
+		}
 
 		// Find component versions for comparison e.g. ("from" v1.0.0 "to" v2.0.0).
-		let components;
+		let to;
+		let from;
 		try {
-			components = await getVersions(argv);
+			from = await Version.create(argv[0], argv[1]);
+			to = await Version.create(argv[0], argv[2]);
 		} catch (error) {
 			this.error(error.message);
 		}
-
-		const to = components.to;
-		const from = components.from;
 
 		// Get bundle information for both component versions.
 		let toBundles;
@@ -41,19 +43,10 @@ class OrigamiBundleSizeCliCommand extends Command {
 	}
 }
 
-OrigamiBundleSizeCliCommand.description = `Find the difference in JS and CSS bundle size between component versions.
+OrigamiBundleSizeCliCommand.description = `Find the difference in JS and CSS bundle size between two released component versions.
 ...
-
-Run within a component directory to compare the bundle sizes of HEAD against the
-latest release of the same major (HEAD must be pushed to Github).
-> origami-bundle-size
-
-Or provide a verison to compare against HEAD.
-> origami-bundle-size v1.0.0
-
-Or compare the bundle size of any two published versions of a given Origami
-component.
-> origami-bundle-size o-table v1.0.0 v2.0.0
+E.g.
+> origami-bundle-size o-table v5.0.0 v7.4.0
 `;
 
 OrigamiBundleSizeCliCommand.strict = false;
