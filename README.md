@@ -9,44 +9,32 @@ Find the difference in JS and CSS bundle size between component versions, includ
 ## Table Of Contents
 
   * [Requirements](#requirements)
-  * [Useage](#useage)
+  * [Usage](#Usage)
   * [Testing](#testing)
-  * [Publish](#publish)
+  * [Migration Guides](#migration-guides)
   * [License](#license)
 
 
 ## Requirements
 
-Origami Bundle Size CLI requires [Node.js] 10.x and [npm].
+Origami Bundle Size CLI requires [Node.js] 12.x and [npm].
 
 ## Usage
 
-First install  Origami Bundle Size CLI:
+First install Origami Bundle Size CLI:
 
 ```
 npm install -g @financial-times/origami-bundle-size-cli
 ```
 
-Run within a component directory to compare the bundle sizes of HEAD against the
-latest release (HEAD must be pushed to Github).
-```
-origami-bundle-size
-```
-
-Or within a component directory and provide a verison to compare HEAD against (HEAD must be pushed to Github).
-```
-origami-bundle-size v1.0.0
-```
-
-Or compare the bundle size of any two published versions of a given Origami
-component.
+Run with the Origami component name and two release numbers to compare:
 ```
 origami-bundle-size o-table v5.0.0 v7.4.0
 ```
 
 Example output:
 ```
-o-table bundle size difference from v5.0.0 to v7.4.0
+o-table bundle size difference from v5.0.0 v7.4.0
 js: 38.16kb increase (9.87kb/gzip)
 css, master: 12.08kb increase (1.64kb/gzip)
 ```
@@ -69,13 +57,12 @@ npm run lint
 
 The tests and linter are run when commits are pushed, you can view [results on CI][ci]. They must pass before we merge a pull request.
 
+## Migration Guides
 
-## Publish
-
-- Run `npm version [version]`, where version is major, minor, patch, [or some other version](https://docs.npmjs.com/cli/version).
-- Open a PR which includes the updated `package.json`.
-- When the PR is approved, merge and tag the release in Github.
-- Tagging will trigger CI to deploy to npm.
+State | Major Version | Last Minor Release | Migration guide |
+:---: | :---: | :---: | :---:
+⚠ maintained | 2 | N/A | [migrate to v2](MIGRATION.md#migrating-from-v1-to-v2) |
+╳ deprecated | 1 | 1.1.3 | N/A |
 
 ## License
 
