@@ -2,7 +2,6 @@
 
 const sinon = require('sinon');
 const proclaim = require('proclaim');
-const proxyquire = require('proxyquire');
 const RepoDataClient = require('@financial-times/origami-repo-data-client');
 const Version = require('../../src/version');
 
@@ -35,20 +34,12 @@ describe('bundle-size', () => {
 	}];
 
 	let repoDataStub;
-	let buildServiceSizeStub;
 	let getBundleSize;
 
 	beforeEach(() => {
-		// Mock `build-service-bundle-size` required by `bundle-size`,
-		// the function under test.
-		buildServiceSizeStub = sinon.stub();
-		buildServiceSizeStub.withArgs(name, sinon.match.any, 'css').returns(mockCssBundles);
-		buildServiceSizeStub.withArgs(name, sinon.match.any, 'js').returns(mockJsBundles);
-		getBundleSize = proxyquire('../../src/bundle-size', {
-			'./build-service-bundle-size': buildServiceSizeStub
-		});
-		// Repo data does not return a language property in its bundle data.
+		getBundleSize = require('../../src/bundle-size');
 		// Mock repo data.
+		// Repo data does not return a language property in its bundle data.
 		repoDataStub = sinon.stub(RepoDataClient.prototype, 'listBundles');
 		repoDataStub.withArgs(name, sinon.match.any, 'css').returns(mockCssBundles.map(b => {
 			delete b.language;
@@ -71,38 +62,16 @@ describe('bundle-size', () => {
 			proclaim.isTrue(repoDataStub.called);
 			proclaim.deepEqual(bundles, [...mockJsBundles, ...mockCssBundles]);
 		});
-
-		it('does not generate bundle information from the build service if repo data succeeds', async () => {
-			const bundles = await getBundleSize(version);
-			proclaim.isTrue(buildServiceSizeStub.notCalled);
-			proclaim.deepEqual(bundles, [...mockJsBundles, ...mockCssBundles]);
-		});
-
-		it('generates bundle information from the build service if repo data fails', async () => {
-			// Update repo data mock to fail. This may happen if repo data is
-			// down, or can't find the semver version.
-			repoDataStub.restore();
-			repoDataStub = sinon.stub(RepoDataClient.prototype, 'listBundles');
-			repoDataStub.throwsException(new Error());
-			// Create bundle.
-			const bundles = await getBundleSize(version);
-			// Assert the build service was used to generate bundle information instead.
-			proclaim.isTrue(buildServiceSizeStub.called);
-			proclaim.deepEqual(bundles, [...mockJsBundles, ...mockCssBundles]);
-		});
 	});
 
 	describe('given a non-semver version', () => {
-		it('does not fetch bundle information from repo data', async () => {
-			const bundles = await getBundleSize(nonSemverVersion);
-			proclaim.isTrue(repoDataStub.notCalled);
-			proclaim.deepEqual(bundles, [...mockJsBundles, ...mockCssBundles]);
-		});
-
-		it('generates bundle information from the build service', async () => {
-			const bundles = await getBundleSize(nonSemverVersion);
-			proclaim.isTrue(buildServiceSizeStub.called);
-			proclaim.deepEqual(bundles, [...mockJsBundles, ...mockCssBundles]);
+		it('throws an error', async () => {
+			try {
+				await getBundleSize(nonSemverVersion);
+			} catch (error) {
+				return proclaim.isInstanceOf(error, TypeError);
+			}
+			proclaim.ok(false, 'No error thrown.');
 		});
 	});
 });

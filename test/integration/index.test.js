@@ -5,12 +5,10 @@ const nixt = require('nixt');
 describe('origami-bundle-size-cli', function() {
 	this.timeout(20000);
 
-	it('exits with an error with no arguments and not in a component directory', (done) => {
+	it('exits with an error with no arguments', (done) => {
 		nixt({ colors: false })
 			.run('./bin/run')
-			.stderr(` ›   Error: Could not get component details locally:
- ›   Could not parse the component's bower.json.
- ›   Are you not running in a component directory, or missing arguments?`)
+			.stderr(' ›   Error: Incorrect number of arguments, see "origami-bundle-size --help"')
 			.end(done);
 	});
 
